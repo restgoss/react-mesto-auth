@@ -3,7 +3,7 @@
 // просто мне очень необходимо успеть до жесткого дедлайна (который завтра 06.08). 
 // Если я не успею - меня отчислят, т.к. не имею больше итераций( Спасибо вам заранее большое!
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
 import api from "../utils/api";
@@ -40,7 +40,7 @@ function App() {
   const [userEmail, setUserEmail] = useState(null);
   const navigate = useNavigate();
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     try {
       const profileInfo = await api.getUserInfo();
       setCurrentUser(profileInfo);
@@ -49,15 +49,16 @@ function App() {
     } catch (error) {
       console.log(`Ошибка при получении данных: ${error.message}`);
     }
-  }, []);
-
+  };
+  
   useEffect(() => {
     if (isLoggedIn) {
       fetchData();
     }
-  }, [fetchData, isLoggedIn]);
+  }, [isLoggedIn]);
+  
 
-  const checkToken = useCallback(async () => {
+  const checkToken = async () => {
     const token = localStorage.getItem("jwt");
     if (isLoggedIn === true) {
       navigate("/");
@@ -72,47 +73,44 @@ function App() {
         console.log(`Ошибка ${error} при сохранении токена`);
       }
     }
-  }, [isLoggedIn, navigate]);
+  };
+  
 
   useEffect(() => {
     checkToken();
   }, [checkToken]);
 
-  const onSignUp = useCallback(
-    async ({ email, password }) => {
-      try {
-        await auth.handleRegistration({ email, password });
-        navigate("/sign-in");
-        setTooltipImageSrc(success);
-        setTooltipText("Вы успешно зарегистрировались!");
-        setIsTooltipOpen(true);
-      } catch (error) {
-        setTooltipImageSrc(failure);
-        setTooltipText("Что-то пошло не так! Попробуйте ещё раз.");
-        setIsTooltipOpen(true);
-      }
-    },
-    [navigate]
-  );
+  const onSignUp = async ({ email, password }) => {
+    try {
+      await auth.handleRegistration({ email, password });
+      navigate("/sign-in");
+      setTooltipImageSrc(success);
+      setTooltipText("Вы успешно зарегистрировались!");
+      setIsTooltipOpen(true);
+    } catch (error) {
+      setTooltipImageSrc(failure);
+      setTooltipText("Что-то пошло не так! Попробуйте ещё раз.");
+      setIsTooltipOpen(true);
+    }
+  };
 
-  const onSignIn = useCallback(
-    async ({ email, password }) => {
-      try {
-        const res = await auth.handleLogIn({ email, password });
-        localStorage.setItem("jwt", res.token);
-        setIsLoggedIn(true);
-        setUserEmail(email);
-        navigate("/");
-      } catch (error) {
-        setTooltipImageSrc(failure);
-        setTooltipText("Что-то пошло не так! Попробуйте ещё раз.");
-        setIsTooltipOpen(true);
-      }
-    },
-    [navigate]
-  );
 
-  const onSignOut = useCallback(async () => {
+  const onSignIn = async ({ email, password }) => {
+    try {
+      const res = await auth.handleLogIn({ email, password });
+      localStorage.setItem("jwt", res.token);
+      setIsLoggedIn(true);
+      setUserEmail(email);
+      navigate("/");
+    } catch (error) {
+      setTooltipImageSrc(failure);
+      setTooltipText("Что-то пошло не так! Попробуйте ещё раз.");
+      setIsTooltipOpen(true);
+    }
+  };
+
+
+  const onSignOut = async () => {
     await Promise.all([
       setIsLoggedIn(false),
       setUserEmail(null),
@@ -120,7 +118,7 @@ function App() {
     ]);
 
     navigate("/sign-in");
-  }, [navigate]);
+  };
 
   const handleCardLike = async (card) => {
     try {

@@ -4,6 +4,7 @@
   font-size: calc((100vw - 320px) / (1280 - 320) * (24 - 20) + 20px);
   font-weight: 900;
   line-height: calc((100vw - 320px) / (1280 - 320) * (29 - 21) + 24px);
+  color: #fff;
 }
 
 @media screen and (min-width: 1280px) {

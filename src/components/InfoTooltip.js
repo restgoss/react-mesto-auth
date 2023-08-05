@@ -1,10 +1,10 @@
 import useClose from "../utils/useClose";
 
-function InfoTooltip({ imageStatus, title, isOpen, onClose }) {
-  useClose(isOpen, onClose);
+function InfoTooltip({ imageStatus, title, isOpened, onClose }) {
+  useClose(isOpened, onClose);
 
   return (
-    <div className={`popup ${isOpen ? "popup_active" : ""}`}>
+    <div className={`popup ${isOpened ? "popup_active" : ""}`}>
       <div className="popup__info">
         <img className="popup__status" src={imageStatus} alt="Статус входа" />
         <h2 className="popup__message">{title}</h2>
