@@ -1,28 +1,25 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Register({ onSignUp }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegistrationFormSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-      onSignUp({
-        email,
-        password,
-      });
-    },
-    [email, onSignUp, password]
-  );
+  const handleRegistrationFormSubmit = (event) => {
+    event.preventDefault();
+    onSignUp({
+      email,
+      password,
+    });
+  };
 
-  const handleEmailInputChange = useCallback((event) => {
+  const handleEmailInputChange = (event) => {
     setEmail(event.target.value);
-  }, []);
+  };
 
-  const handlePasswordInputChange = useCallback((event) => {
+  const handlePasswordInputChange = (event) => {
     setPassword(event.target.value);
-  }, []);
+  };
 
   return (
     <section className="login">

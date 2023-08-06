@@ -1,27 +1,25 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 
 export function Login({ onSignIn }) {
   const [email, setUserEmail] = useState("");
   const [password, setUserPassword] = useState("");
 
-  const handleLoginFormSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-      onSignIn({
-        email,
-        password,
-      });
-    },
-    [email, password, onSignIn]
-  );
+  const handleLoginFormSubmit = (event) => {
+    event.preventDefault();
+    onSignIn({
+      email,
+      password,
+    });
+  };
 
-  const handleEmailInputChange = useCallback((event) => {
+
+  const handleEmailInputChange = (event) => {
     setUserEmail(event.target.value);
-  }, []);
+  };
 
-  const handlePasswordInputChange = useCallback((event) => {
+  const handlePasswordInputChange = (event) => {
     setUserPassword(event.target.value);
-  }, []);
+  };
 
   return (
     <section className="login">
